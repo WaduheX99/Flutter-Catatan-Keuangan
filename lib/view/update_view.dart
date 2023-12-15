@@ -54,6 +54,7 @@ class _UpdatePageState extends State<UpdatePage> {
           DateFormat('yyyy-MM-DD hh:mm').parse(tanggalController.text);
 
       Transaksi editTransaksi = Transaksi(
+        uid: akun.uid,
         nama: namaController.text,
         tanggal: parsedDateTime,
         nominal: int.parse(nominalController.text),
@@ -67,7 +68,7 @@ class _UpdatePageState extends State<UpdatePage> {
       final respond = await _firebaseHelper.updateTransaksi(
           editTransaksi, akun, file, transaksi.nominal);
       if (respond == 'success') {
-        Navigator.popAndPushNamed(context, '/home');
+        Navigator.pop(context);
       } else {
         throw respond;
       }
@@ -107,12 +108,6 @@ class _UpdatePageState extends State<UpdatePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: headerColor,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.popAndPushNamed(context, '/home');
-          },
-        ),
         title: const Text(
           'Edit Transaksi',
           style: titleAppBar,

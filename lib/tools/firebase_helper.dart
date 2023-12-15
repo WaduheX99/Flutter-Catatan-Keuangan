@@ -107,14 +107,16 @@ class FirebaseHelper {
 
       for (var documents in querySnapshot.docs) {
         listTransaksi.add(Transaksi(
-            nama: documents['nama'],
-            tanggal: documents['tanggal'].toDate(),
-            nominal: documents['nominal'],
-            jenis: documents['jenis'],
-            kategori: documents['kategori'],
-            deskripsi: documents['deskripsi'],
-            gambar: documents['gambar'],
-            docId: documents.id));
+          uid: documents['uid'],
+          nama: documents['nama'],
+          tanggal: documents['tanggal'].toDate(),
+          nominal: documents['nominal'],
+          jenis: documents['jenis'],
+          kategori: documents['kategori'],
+          deskripsi: documents['deskripsi'],
+          gambar: documents['gambar'],
+          docId: documents['docId'],
+        ));
       }
     } catch (e) {
       return listTransaksi;
@@ -134,7 +136,9 @@ class FirebaseHelper {
 
       String url = await uploadImage(file);
 
-      await transaksiCollection.add({
+      final id = transaksiCollection.doc().id;
+
+      await transaksiCollection.doc(id).set({
         'nama': transaksi.nama,
         'tanggal': timestamp,
         'nominal': transaksi.nominal,
@@ -143,6 +147,7 @@ class FirebaseHelper {
         'deskripsi': transaksi.deskripsi,
         'gambar': url,
         'uid': _auth.currentUser!.uid,
+        'docId': id,
       }).catchError((e) {
         throw e;
       });
@@ -178,6 +183,7 @@ class FirebaseHelper {
         'deskripsi': transaksi.deskripsi,
         'gambar': url,
         'uid': _auth.currentUser!.uid,
+        'docId': transaksi.docId,
       });
 
       updateSaldo(transaksi, akun, deficit);

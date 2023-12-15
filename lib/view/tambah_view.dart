@@ -52,6 +52,7 @@ class _TambahPageState extends State<TambahPage> {
           DateFormat('yyyy-MM-DD hh:mm').parse(tanggalController.text);
 
       Transaksi transaksi = Transaksi(
+        uid: akun.uid,
         nama: namaController.text,
         tanggal: parsedDateTime,
         nominal: int.parse(nominalController.text),
@@ -63,7 +64,7 @@ class _TambahPageState extends State<TambahPage> {
 
       final respond = await _firebaseHelper.addTransaksi(transaksi, akun, file);
       if (respond == 'success') {
-        Navigator.popAndPushNamed(context, '/home');
+        Navigator.pop(context);
       } else {
         throw respond;
       }
@@ -87,12 +88,6 @@ class _TambahPageState extends State<TambahPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: headerColor,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.popAndPushNamed(context, '/home');
-          },
-        ),
         title: const Text(
           'Tambah Transaksi',
           style: titleAppBar,

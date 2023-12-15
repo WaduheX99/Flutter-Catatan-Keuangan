@@ -24,11 +24,11 @@ class ListItem extends StatefulWidget {
 class _ListItemState extends State<ListItem> {
   final FirebaseHelper _firebaseHelper = FirebaseHelper();
 
-  void delete() async {
+  void delete(BuildContext buildContext) async {
     final respond = await _firebaseHelper.deleteTransaksi(widget.transaksi);
 
     if (respond == 'success') {
-      Navigator.popAndPushNamed(context, '/home');
+      Navigator.pop(buildContext);
     } else {
       final snackbar = SnackBar(content: Text(respond));
       ScaffoldMessenger.of(context).showSnackBar(snackbar);
@@ -75,7 +75,7 @@ class _ListItemState extends State<ListItem> {
             ),
           ),
           onTap: () {
-            Navigator.popAndPushNamed(context, '/detail', arguments: {
+            Navigator.pushNamed(context, '/detail', arguments: {
               'transaksi': widget.transaksi,
               'akun': widget.akun,
             });
@@ -83,7 +83,7 @@ class _ListItemState extends State<ListItem> {
           onLongPress: () {
             showDialog(
                 context: context,
-                builder: (BuildContext) {
+                builder: (buildContext) {
                   return AlertDialog(
                     title: Text('Pilih Aksi'),
                     actions: [
@@ -91,7 +91,7 @@ class _ListItemState extends State<ListItem> {
                         onPressed: () {
                           // Tambahkan kode untuk mengedit transaksi di sini
                           Navigator.popAndPushNamed(
-                            context,
+                            buildContext,
                             '/update',
                             arguments: {
                               'transaksi': widget.transaksi,
@@ -102,7 +102,9 @@ class _ListItemState extends State<ListItem> {
                         child: Text('Edit'),
                       ),
                       TextButton(
-                        onPressed: delete,
+                        onPressed: () {
+                          delete(buildContext);
+                        },
                         child: Text('Hapus'),
                       ),
                     ],

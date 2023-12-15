@@ -23,7 +23,7 @@ class _DetailPageState extends State<DetailPage> {
     final respond = await _firebaseHelper.deleteTransaksi(transaksi);
 
     if (respond == 'success') {
-      Navigator.popAndPushNamed(context, '/home');
+      Navigator.pop(context);
     } else {
       final snackbar = SnackBar(content: Text(respond));
       ScaffoldMessenger.of(context).showSnackBar(snackbar);
@@ -40,15 +40,10 @@ class _DetailPageState extends State<DetailPage> {
 
     return Scaffold(
         appBar: AppBar(
-            title: const Text('Detail Transaksi', style: titleAppBar),
-            centerTitle: true,
-            backgroundColor: headerColor,
-            leading: IconButton(
-              icon: const Icon(Icons.arrow_back),
-              onPressed: () {
-                Navigator.popAndPushNamed(context, '/home');
-              },
-            )),
+          title: const Text('Detail Transaksi', style: titleAppBar),
+          centerTitle: true,
+          backgroundColor: headerColor,
+        ),
         body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,

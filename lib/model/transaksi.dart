@@ -1,4 +1,5 @@
 class Transaksi {
+  final String uid;
   final String nama;
   final DateTime tanggal;
   final int nominal;
@@ -9,6 +10,7 @@ class Transaksi {
   final String docId;
 
   Transaksi({
+    required this.uid,
     required this.nama,
     required this.tanggal,
     required this.nominal,

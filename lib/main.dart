@@ -4,6 +4,7 @@ import 'package:catatan_keuangan/view/home_view.dart';
 import 'package:catatan_keuangan/view/register_view.dart';
 import 'package:catatan_keuangan/view/tambah_view.dart';
 import 'package:catatan_keuangan/view/update_view.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:catatan_keuangan/view/login_view.dart';
@@ -21,12 +22,14 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    User? user = FirebaseAuth.instance.currentUser;
+
     return MaterialApp(
       title: 'Catatan Keuangan',
       theme: ThemeData(
         fontFamily: 'Poppins',
       ),
-      initialRoute: '/login',
+      initialRoute: user == null ? '/login' : '/home',
       routes: {
         '/login': (context) => const LoginView(),
         '/register': (context) => const RegisterView(),

@@ -55,9 +55,6 @@ class _HomeViewState extends State<HomeView> {
   }
 
   Future<void> getAkun() async {
-    setState(() {
-      _isLoading = true;
-    });
     try {
       final respond = await _firebaseHelper.getAkun();
       setState(() {
@@ -66,17 +63,10 @@ class _HomeViewState extends State<HomeView> {
     } catch (e) {
       final snackbar = SnackBar(content: Text(e.toString()));
       ScaffoldMessenger.of(context).showSnackBar(snackbar);
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
     }
   }
 
   Future<void> getTransaksi() async {
-    setState(() {
-      _isLoading = true;
-    });
     try {
       final respond = await _firebaseHelper.getListTransaksi();
       setState(() {
@@ -85,22 +75,18 @@ class _HomeViewState extends State<HomeView> {
     } catch (e) {
       final snackbar = SnackBar(content: Text(e.toString()));
       ScaffoldMessenger.of(context).showSnackBar(snackbar);
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
     }
   }
 
   @override
   void initState() {
     super.initState();
-    getAkun();
-    getTransaksi();
   }
 
   @override
   Widget build(BuildContext context) {
+    getAkun();
+    getTransaksi();
     return Scaffold(
         backgroundColor: Colors.white,
         body: SafeArea(
@@ -190,8 +176,7 @@ class _HomeViewState extends State<HomeView> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            Navigator.popAndPushNamed(context, '/tambah',
-                arguments: {'akun': akun});
+            Navigator.pushNamed(context, '/tambah', arguments: {'akun': akun});
           },
           backgroundColor: primaryColor,
           shape:
